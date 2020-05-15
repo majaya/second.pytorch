@@ -210,11 +210,20 @@ class PillarFeatureNet(nn.Module):
         f_cluster = features[:, :, :3] - points_mean
 
         # Find distance of x, y, and z from pillar center
+        '''
         f_center = torch.zeros_like(features[:, :, :2])
         f_center[:, :, 0] = features[:, :, 0] - (
             coors[:, 3].to(dtype).unsqueeze(1) * self.vx + self.x_offset)
         f_center[:, :, 1] = features[:, :, 1] - (
             coors[:, 2].to(dtype).unsqueeze(1) * self.vy + self.y_offset)
+        '''
+        
+        f_center_0 = features[:, :, 0] - (
+            coors[:, 3].to(dtype).unsqueeze(1) * self.vx + self.x_offset)
+        f_center_1 = features[:, :, 1] - (
+            coors[:, 2].to(dtype).unsqueeze(1) * self.vy + self.y_offset)
+        f_center = torch.cat((f_center_0.unsqueeze(2), f_center_1.unsqueeze(2)), 2)
+        
 
         # Combine together feature decorations
         features_ls = [features, f_cluster, f_center]
