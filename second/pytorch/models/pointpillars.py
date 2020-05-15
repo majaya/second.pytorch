@@ -243,7 +243,8 @@ class PillarFeatureNet(nn.Module):
         for pfn in self.pfn_layers:
             features = pfn(features)
 
-        return features.squeeze()
+        #return features.squeeze()
+        return features.squeeze().permute(1,0)
 
 @register_vfe
 class PillarFeatureNetRadius(nn.Module):

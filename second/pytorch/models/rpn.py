@@ -399,10 +399,10 @@ class RPNBase(RPNNoHeadBase):
         C, H, W = box_preds.shape[1:]
         box_preds = box_preds.view(-1, self._num_anchor_per_loc,
                                    self._box_code_size, H, W).permute(
-                                       0, 1, 3, 4, 2).contiguous()
+                                       0, 3, 4, 1, 2).contiguous()
         cls_preds = cls_preds.view(-1, self._num_anchor_per_loc,
                                    self._num_class, H, W).permute(
-                                       0, 1, 3, 4, 2).contiguous()
+                                       0, 3, 4, 1, 2).contiguous()
         # box_preds = box_preds.permute(0, 2, 3, 1).contiguous()
         # cls_preds = cls_preds.permute(0, 2, 3, 1).contiguous()
 
@@ -414,7 +414,7 @@ class RPNBase(RPNNoHeadBase):
             dir_cls_preds = self.conv_dir_cls(x)
             dir_cls_preds = dir_cls_preds.view(
                 -1, self._num_anchor_per_loc, self._num_direction_bins, H,
-                W).permute(0, 1, 3, 4, 2).contiguous()
+                W).permute(0, 3, 4, 1, 2).contiguous()
             # dir_cls_preds = dir_cls_preds.permute(0, 2, 3, 1).contiguous()
             ret_dict["dir_cls_preds"] = dir_cls_preds
         return ret_dict
